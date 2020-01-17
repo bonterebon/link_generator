@@ -20,10 +20,13 @@ def get_token(cluster, username, password):
             'client_id': f'{cluster}_ro.client',
             'userName': username,
             'password': password}
-    resp = requests.post(endpoint, data=data)
-    resp_body = resp.json()
+    try:
+        resp = requests.post(endpoint, data=data)
+        resp_body = resp.json()
 
-    return resp_body['access_token']
+        return resp.status_code, resp_body['access_token']
+    except KeyError:
+        return resp.status_code, 'Email or password is incorrect'
 
 
 def get_feed_id(cluster, token):

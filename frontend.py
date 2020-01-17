@@ -2,25 +2,44 @@ from tkinter import *
 from backend import *
 
 window = Tk()
+window.title('Link generator')
 token = ''
 feed_id = ''
+
+
+def open_alert(message):
+    alert_window = Toplevel(window)
+    x = window.winfo_x()
+    y = window.winfo_y()
+    alert_window.geometry(
+        "%dx%d+%d+%d" % (250, 70, x + window.winfo_width() / 2 - 125, y + + window.winfo_height() / 2 - 35))
+    alert_window.title('Warning')
+    mes = Label(alert_window, text=message)
+    mes.pack(pady=20)
 
 
 def get_token_click():
     global token, feed_id
     token = get_token(variable.get(), email_entry.get(), password_entry.get())
-    feed_id = get_feed_id(variable.get(), token)
-    feed_id_label['text'] = feed_id
-    token_entry.delete(0, END)
-    token_entry.insert(END, token)
+    if token[0] == 200:
+        token = token[1]
+        feed_id = get_feed_id(variable.get(), token)
+        feed_id_label['text'] = feed_id
+        token_entry.delete(0, END)
+        token_entry.insert(END, token)
+    else:
+        open_alert(token[1])
 
 
 def generate_link_click():
     global token, feed_id
-    link = generate_link(variable.get(), feed_id, start_entry.get(), end_entry.get(), token)
-    print(link)
-    link_entry.delete(0, END)
-    link_entry.insert(END, link)
+    if token_entry.get() != '':
+        link = generate_link(variable.get(), feed_id, start_entry.get(), end_entry.get(), token)
+        print(link)
+        link_entry.delete(0, END)
+        link_entry.insert(END, link)
+    else:
+        open_alert('You are unauthorized')
 
 
 cluster_label = Label(window, text='Cluster:')
