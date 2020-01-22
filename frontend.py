@@ -42,6 +42,15 @@ def generate_link_click():
         open_alert('You are unauthorized')
 
 
+def show_menu(e):
+    menu.entryconfigure('Copy',
+                        command=lambda: e.widget.event_generate('<<Copy>>'))
+    menu.entryconfigure('Paste',
+                        command=lambda: e.widget.event_generate('<<Paste>>'))
+    # menu.tk.call("tk_popup", menu, entry.x_root, entry.y_root)
+    menu.post(e.x_root, e.y_root)
+
+
 cluster_label = Label(window, text='Cluster:')
 cluster_label.grid(row=0, column=0, sticky='nw', pady=5)
 
@@ -88,6 +97,7 @@ start_label.grid(row=6, column=0, sticky='nw', pady=5)
 start_entry = Entry(window, width=40)
 start_entry.grid(row=6, column=1, sticky='ne', pady=5)
 start_entry.insert(END, '2020-01-17T08:01:36.76')
+start_entry.bind_class("Entry", "<Button-3><ButtonRelease-3>", show_menu)
 
 end_label = Label(window, text='End:')
 end_label.grid(row=7, column=0, sticky='nw')
@@ -104,5 +114,9 @@ link_label.grid(row=9, column=0, sticky='nw', pady=5)
 
 link_entry = Entry(window, width=40)
 link_entry.grid(row=9, column=1, sticky='ne', pady=5)
+
+menu = Menu(window, tearoff=0)
+menu.add_command(label='Copy')
+menu.add_command(label='Paste')
 
 window.mainloop()
