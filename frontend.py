@@ -24,7 +24,8 @@ def get_token_click():
     if token[0] == 200:
         token = token[1]
         feed_id = get_feed_id(variable.get(), token)
-        feed_id_label['text'] = feed_id
+        feed_id_entry.delete(0, END)
+        feed_id_entry.insert(END, feed_id)
         token_entry.delete(0, END)
         token_entry.insert(END, token)
     else:
@@ -82,8 +83,8 @@ token_button.grid(row=3, column=0, columnspan=2, sticky='e')
 feed_label = Label(window, text='FeedId: ')
 feed_label.grid(row=4, column=0, sticky='w', pady=5)
 
-feed_id_label = Label(window, text='')
-feed_id_label.grid(row=4, column=1, sticky='w', pady=5)
+feed_id_entry = Entry(window, text='', width=40)
+feed_id_entry.grid(row=4, column=1, sticky='w', pady=5)
 
 token_label = Label(window, text='Token: ')
 token_label.grid(row=5, column=0, sticky='w', pady=5)
